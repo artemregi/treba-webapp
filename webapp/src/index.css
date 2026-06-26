@@ -111,7 +111,7 @@ body {
 }
 
 /* ── Tab Content ── */
-.tab-content { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.tab-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 .tab-content::-webkit-scrollbar { width: 0; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -152,7 +152,8 @@ body {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .page {
   display: flex; flex-direction: column;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
   background: var(--parch);
 }
 .page-candle { background: #fdf8ee; }
