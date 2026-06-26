@@ -17,16 +17,38 @@ export default function TrebaPage({ onCartOpen }) {
 
   const types = forWhom === 'health' ? trebaTypesHealth : trebaTypesRepose;
 
+  const [done, setDone] = useState(null);
+
   function handleAdd() {
-    addToCart({
-      type: 'ТРЕБА',
-      name: trebaType.name,
-      church: church.name,
-      names,
-      price: trebaType.price,
-    });
-    setStep(0); setForWhom('health'); setTrebaType(null); setNames(''); setChurch(null);
-    onCartOpen();
+    addToCart({ type: 'ТРЕБА', name: trebaType.name, church: church.name, names, price: trebaType.price });
+    setDone({ name: trebaType.name, church: church.name, price: trebaType.price });
+  }
+
+  function reset() {
+    setStep(0); setForWhom('health'); setTrebaType(null); setNames(''); setChurch(null); setDone(null);
+  }
+
+  if (done) {
+    return (
+      <div className="page">
+        <StepHeader title="Православная Треба" subtitle="добавлено в корзину" cartCount={count} onCartClick={onCartOpen} />
+        <div className="success-screen">
+          <div className="success-icon">✓</div>
+          <div className="success-title">Добавлено в корзину</div>
+          <div className="success-card">
+            <div className="success-card-type">Треба</div>
+            <div className="success-card-name">{done.name}</div>
+            <div className="success-card-church">{done.church}</div>
+            <div className="success-card-price">{done.price} ₽</div>
+          </div>
+          <p className="success-hint">Вы можете добавить ещё требы, свечи или пожертвование — и оплатить всё одним платежом</p>
+          <div className="success-buttons">
+            <button className="btn-secondary" onClick={reset}>+ Добавить ещё</button>
+            <button className="btn-next" onClick={onCartOpen}>🛒 Корзина · {count}</button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

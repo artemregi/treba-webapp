@@ -15,19 +15,40 @@ export default function DonatePage({ onCartOpen }) {
   const [customAmount, setCustomAmount] = useState('');
   const [recurring, setRecurring] = useState(false);
   const [name, setName] = useState('');
+  const [done, setDone] = useState(null);
 
   const finalAmount = customAmount ? Number(customAmount) : amount;
 
   function handleAdd() {
-    addToCart({
-      type: 'ПОЖЕРТВОВАНИЕ',
-      name: 'Пожертвование',
-      church: church.name,
-      names: name,
-      price: finalAmount,
-    });
-    setStep(0); setChurch(null); setAmount(300); setCustomAmount(''); setName('');
-    onCartOpen();
+    addToCart({ type: 'ПОЖЕРТВОВАНИЕ', name: 'Пожертвование', church: church.name, names: name, price: finalAmount });
+    setDone({ church: church.name, price: finalAmount });
+  }
+
+  function reset() {
+    setStep(0); setChurch(null); setAmount(300); setCustomAmount(''); setName(''); setDone(null);
+  }
+
+  if (done) {
+    return (
+      <div className="page">
+        <StepHeader title="Православная Треба" subtitle="добавлено в корзину" cartCount={count} onCartClick={onCartOpen} />
+        <div className="success-screen">
+          <div className="success-icon">✓</div>
+          <div className="success-title">Добавлено в корзину</div>
+          <div className="success-card">
+            <div className="success-card-type">Пожертвование</div>
+            <div className="success-card-name">Пожертвование</div>
+            <div className="success-card-church">{done.church}</div>
+            <div className="success-card-price">{done.price} ₽</div>
+          </div>
+          <p className="success-hint">Вы можете добавить ещё требы, свечи или пожертвование — и оплатить всё одним платежом</p>
+          <div className="success-buttons">
+            <button className="btn-secondary" onClick={reset}>+ Добавить ещё</button>
+            <button className="btn-next" onClick={onCartOpen}>🛒 Корзина · {count}</button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -55,22 +76,14 @@ export default function DonatePage({ onCartOpen }) {
             <p className="hint">Храм: {church?.name}</p>
             <div className="amount-grid">
               {AMOUNTS.map(a => (
-                <button
-                  key={a}
-                  className={`amount-btn ${!customAmount && amount === a ? 'selected' : ''}`}
-                  onClick={() => { setAmount(a); setCustomAmount(''); }}
-                >
+                <button key={a} className={`amount-btn ${!customAmount && amount === a ? 'selected' : ''}`}
+                  onClick={() => { setAmount(a); setCustomAmount(''); }}>
                   {a} ₽
                 </button>
               ))}
             </div>
-            <input
-              className="text-input"
-              type="number"
-              placeholder="Другая сумма, ₽"
-              value={customAmount}
-              onChange={e => setCustomAmount(e.target.value)}
-            />
+            <input className="text-input" type="number" placeholder="Другая сумма, ₽"
+              value={customAmount} onChange={e => setCustomAmount(e.target.value)} />
             <label className="checkbox-row">
               <input type="checkbox" checked={recurring} onChange={e => setRecurring(e.target.checked)} />
               <span>Жертвовать каждый месяц автоматически</span>
@@ -82,12 +95,8 @@ export default function DonatePage({ onCartOpen }) {
           <>
             <h2>Имя для поминовения</h2>
             <p className="hint">Необязательно — можно пропустить</p>
-            <input
-              className="text-input"
-              placeholder="Например: раба Божия Мария"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
+            <input className="text-input" placeholder="Например: раба Божия Мария"
+              value={name} onChange={e => setName(e.target.value)} />
             <p className="hint-small">Церковное имя в родительном падеже: Николая, Марии</p>
             <blockquote className="scripture">
               «Истинно говорю вам, что эта бедная вдова положила больше всех» – Мк 12:43
@@ -97,20 +106,11 @@ export default function DonatePage({ onCartOpen }) {
       </div>
 
       <div className="nav-buttons">
-        {step > 0 && (
-          <button className="btn-back" onClick={() => setStep(s => s - 1)}>← Назад</button>
-        )}
-        {step < 2 ? (
-          <button
-            className="btn-next"
-            disabled={step === 0 && !church}
-            onClick={() => setStep(s => s + 1)}
-          >
-            Далее →
-          </button>
-        ) : (
-          <button className="btn-next" onClick={handleAdd}>+ В корзину</button>
-        )}
+        {step > 0 && <button className="btn-back" onClick={() => setStep(s => s - 1)}>← Назад</button>}
+        {step < 2
+          ? <button className="btn-next" disabled={step === 0 && !church} onClick={() => setStep(s => s + 1)}>Далее →</button>
+          : <button className="btn-next" onClick={handleAdd}>+ В корзину</button>
+        }
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ export default function ProfilePage() {
         </div>
 
         <div className="profile-footer">
-          <span>✝ ✝ ✝</span>
+          <span className="profile-footer-cross">✝ ✝ ✝</span>
           <p>© 2025 Православная Треба · pravtreba.ru</p>
         </div>
       </div>
