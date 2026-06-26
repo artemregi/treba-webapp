@@ -628,62 +628,86 @@ body {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    PROFILE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.profile-header {
-  background: linear-gradient(160deg, var(--night) 0%, var(--navy) 100%);
-  margin: -18px -16px 0;
-  padding: 32px 16px 24px;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
+/* ── Profile User Card ── */
+.prf-card {
+  background: linear-gradient(135deg, var(--night) 0%, var(--navy-mid) 100%);
+  border-radius: var(--r-lg);
+  padding: 20px 18px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: var(--shadow-lg);
   position: relative; overflow: hidden;
 }
-.profile-header::before {
+.prf-card::after {
   content: '✝';
-  position: absolute; right: 24px; top: 16px;
-  font-size: 48px; color: rgba(201,168,76,0.12);
-  line-height: 1;
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 56px; color: rgba(201,168,76,0.07);
+  pointer-events: none;
 }
-.profile-header::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.profile-avatar {
-  width: 68px; height: 68px; border-radius: 50%;
-  background: rgba(201,168,76,0.2);
+.prf-avatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(201,168,76,0.3), rgba(201,168,76,0.15));
   border: 2px solid rgba(201,168,76,0.5);
   display: flex; align-items: center; justify-content: center;
-  font-size: 30px; color: var(--gold);
-}
-.profile-name {
   font-family: var(--font-display);
-  font-size: 20px; font-weight: 600; color: #fff;
+  font-size: 24px; font-weight: 700; color: var(--gold);
+  flex-shrink: 0;
 }
-.profile-username { font-size: 12px; color: rgba(255,255,255,0.5); }
+.prf-info { flex: 1; min-width: 0; }
+.prf-name {
+  font-family: var(--font-display);
+  font-size: 19px; font-weight: 600; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.prf-handle { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+.prf-orders-badge {
+  display: flex; flex-direction: column; align-items: center;
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 10px; padding: 8px 12px;
+  flex-shrink: 0;
+}
+.prf-orders-num {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 700; color: var(--gold); line-height: 1;
+}
+.prf-orders-label { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 2px; }
 
-.profile-menu {
-  background: var(--card); border-radius: var(--r-lg);
-  overflow: hidden; margin-top: 16px;
-  border: 1px solid var(--border); box-shadow: var(--shadow-lg);
+/* ── Profile Menu ── */
+.prf-menu {
+  display: flex; flex-direction: column; gap: 8px;
 }
-.profile-menu-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 15px 18px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer; transition: background 0.15s;
+.prf-row {
+  width: 100%; display: flex; align-items: center; gap: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  cursor: pointer; text-align: left;
+  box-shadow: var(--shadow);
+  transition: background 0.15s, transform 0.1s;
+  font-family: var(--font-ui);
 }
-.profile-menu-item:last-child { border-bottom: none; }
-.profile-menu-item:active { background: var(--parch); }
-.profile-menu-icon { font-size: 19px; width: 24px; text-align: center; }
-.profile-menu-label { font-size: 15px; font-weight: 600; color: var(--text); }
-.profile-menu-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
-.profile-menu-text { flex: 1; }
-.profile-menu-arrow { color: var(--muted); font-size: 18px; }
+.prf-row:active { transform: scale(0.985); background: var(--parch); }
+.prf-row-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.prf-row-text { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.prf-row-label { font-size: 15px; font-weight: 600; color: var(--text); }
+.prf-row-sub { font-size: 12px; color: var(--muted); }
+.prf-row-arrow { color: var(--border2); font-size: 20px; font-weight: 300; flex-shrink: 0; }
 
-.profile-footer {
-  text-align: center; color: var(--muted);
-  font-size: 12px; padding-top: 10px;
-  display: flex; flex-direction: column; gap: 4px;
+/* ── Profile Footer ── */
+.prf-footer {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 4px 0 8px;
+  color: var(--muted); font-size: 11.5px;
 }
-.profile-footer-cross { color: var(--gold); font-size: 14px; letter-spacing: 8px; }
+.prf-footer-cross {
+  color: var(--gold); font-size: 13px; letter-spacing: 10px;
+  opacity: 0.7;
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ADDED TO CART SUCCESS

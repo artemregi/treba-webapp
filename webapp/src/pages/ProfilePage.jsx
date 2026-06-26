@@ -1,46 +1,62 @@
 import { useCart } from '../store/cartStore';
 
+const menuItems = [
+  { icon: '✏', label: 'Редактировать профиль', sub: 'Имя, email, телефон', color: '#4a7cb5' },
+  { icon: '📋', label: 'Мои заказы', sub: null, color: '#6a5acd' },
+  { icon: '❓', label: 'Частые вопросы', sub: 'FAQ', color: '#c9a84c' },
+  { icon: '🔒', label: 'Политика конфиденциальности', sub: null, color: '#888' },
+  { icon: '💬', label: 'Поддержка', sub: '@zakaz_treba_bot', color: '#29a884' },
+];
+
 export default function ProfilePage() {
   const { count } = useCart();
   const tg = window.Telegram?.WebApp;
   const user = tg?.initDataUnsafe?.user;
-
-  const menuItems = [
-    { icon: '✏️', label: 'Редактировать профиль', sub: 'Имя, email, телефон' },
-    { icon: '📋', label: 'Мои заказы', sub: `${count} заказов` },
-    { icon: '❓', label: 'Частые вопросы', sub: 'FAQ' },
-    { icon: '🔒', label: 'Политика конфиденциальности', sub: '' },
-    { icon: '💬', label: 'Поддержка', sub: 'Telegram @zakaz_treba_bot' },
-  ];
+  const initials = user?.first_name ? user.first_name[0].toUpperCase() : '?';
+  const fullName = [user?.first_name, user?.last_name].filter(Boolean).join(' ') || 'Пользователь';
 
   return (
     <div className="page">
       <div className="page-content">
-        <div className="profile-header">
-          <div className="profile-avatar">
-            {user?.first_name?.[0] || '👤'}
+
+        {/* User card */}
+        <div className="prf-card">
+          <div className="prf-avatar">{initials}</div>
+          <div className="prf-info">
+            <div className="prf-name">{fullName}</div>
+            {user?.username
+              ? <div className="prf-handle">@{user.username}</div>
+              : <div className="prf-handle">Telegram пользователь</div>
+            }
           </div>
-          <div className="profile-name">{user?.first_name || 'Пользователь'} {user?.last_name || ''}</div>
-          {user?.username && <div className="profile-username">@{user.username}</div>}
+          <div className="prf-orders-badge">
+            <span className="prf-orders-num">{count}</span>
+            <span className="prf-orders-label">заказов</span>
+          </div>
         </div>
 
-        <div className="profile-menu">
+        {/* Menu */}
+        <div className="prf-menu">
           {menuItems.map((item, i) => (
-            <div key={i} className="profile-menu-item">
-              <span className="profile-menu-icon">{item.icon}</span>
-              <div className="profile-menu-text">
-                <div className="profile-menu-label">{item.label}</div>
-                {item.sub && <div className="profile-menu-sub">{item.sub}</div>}
+            <button key={i} className="prf-row">
+              <span className="prf-row-icon" style={{ background: item.color + '18', color: item.color }}>
+                {item.icon}
+              </span>
+              <div className="prf-row-text">
+                <span className="prf-row-label">{item.label}</span>
+                {item.sub && <span className="prf-row-sub">{item.sub}</span>}
               </div>
-              <span className="profile-menu-arrow">›</span>
-            </div>
+              <span className="prf-row-arrow">›</span>
+            </button>
           ))}
         </div>
 
-        <div className="profile-footer">
-          <span className="profile-footer-cross">✝ ✝ ✝</span>
-          <p>© 2025 Православная Треба · pravtreba.ru</p>
+        {/* Footer */}
+        <div className="prf-footer">
+          <span className="prf-footer-cross">✝ ✝ ✝</span>
+          <span>© 2025 Православная Треба · pravtreba.ru</span>
         </div>
+
       </div>
     </div>
   );
